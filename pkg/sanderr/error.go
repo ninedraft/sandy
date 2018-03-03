@@ -15,6 +15,12 @@ type Err struct {
 	Details []string `json:"details"`
 }
 
+func NewErr(msg string) *Err {
+	return &Err{
+		Message: msg,
+	}
+}
+
 func (err *Err) AddError(er error) *Err {
 	err.Details = append(err.Details, er.Error())
 	return err
