@@ -1,9 +1,13 @@
 package sandyconfig
 
 import (
-	"fmt"
+	"github.com/ninedraft/sandy/pkg/sanderr"
 	"github.com/pelletier/go-toml"
 	"strings"
+)
+
+var (
+	ErrInvalidField = sanderr.NewErr(`invalid field`)
 )
 
 type parsedData struct {
@@ -22,7 +26,8 @@ func (data *parsedData) validateName() error {
 	if strings.TrimSpace(data.Config.Name) == "" {
 		if data.Tree.Has("Name") {
 			line := data.Tree.GetPosition("Name").Line
-			return fmt.Errorf(`"Name" defined as zero string at line %d`, line)
+			return ErrInvalidField.
+				AddStrF(`"Name" defined as zero string at line %d`, line)
 		}
 	}
 	return nil
